@@ -432,19 +432,6 @@ MAKE_HOOK_OFFSETLESS(Player_Update, void, Il2CppObject* self)
     }
 }
 
-MAKE_HOOK_OFFSETLESS(PhotonNetworkController_OnJoinedRoom, void, Il2CppObject* self)
-{
-    PhotonNetworkController_OnJoinedRoom(self);
-
-    Il2CppObject* currentRoom = CRASH_UNLESS(il2cpp_utils::RunMethod("Photon.Pun", "PhotonNetwork", "get_CurrentRoom"));
-
-    if (currentRoom)
-    {
-        moddedRoom = !CRASH_UNLESS(il2cpp_utils::RunMethod<bool>(currentRoom, "get_IsVisible"));
-    }
-    else moddedRoom = true;
-}
-
 extern "C" void setup(ModInfo& info)
 {
     info.id = ID;
@@ -459,8 +446,7 @@ extern "C" void load()
 
     GorillaUI::Init();
 
-    INSTALL_HOOK_OFFSETLESS(getLogger(), PhotonNetworkController_OnJoinedRoom, il2cpp_utils::FindMethodUnsafe("", "PhotonNetworkController", "OnJoinedRoom", 0));
-	INSTALL_HOOK_OFFSETLESS(getLogger(), Player_Update, il2cpp_utils::FindMethodUnsafe("GorillaLocomotion", "Player", "Update", 0));
+    INSTALL_HOOK_OFFSETLESS(getLogger(), Player_Update, il2cpp_utils::FindMethodUnsafe("GorillaLocomotion", "Player", "Update", 0));
     
     custom_types::Register::RegisterType<PlatformMonke::PlatformMonkeWatchView>(); 
     GorillaUI::Register::RegisterWatchView<PlatformMonke::PlatformMonkeWatchView*>("<b><i><color=#FFE65C>Platform Monke</color></i></b>", VERSION);
